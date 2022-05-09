@@ -1,5 +1,6 @@
 from tkinter import *
 from tkinter import filedialog as fd
+from tkinter import messagebox
 import os
 from PyPDF4 import PdfFileMerger, PdfFileReader
 import tempfile
@@ -19,7 +20,9 @@ class app():
         self.mainWindow.title("Vinay's PDF merger")
         
         # Set the geometry of the window
-        self.mainWindow.geometry("600x400")
+        self.mainWindow.geometry("300x400")
+
+        self.mainWindow.resizable(False, False)
         
         # Initialise list to hold the file path
         self.files = []
@@ -29,7 +32,7 @@ class app():
         
         
         # Create frame to hold file list
-        self.frame = Frame(self.mainWindow, width=self.mainWindow.winfo_width())
+        self.frame = Frame(self.mainWindow)
         
         # Add scroll bar to the frame for the file list
         self.scrollbar = Scrollbar(self.frame, orient = VERTICAL)
@@ -58,35 +61,41 @@ class app():
         self.scrollbar.pack(side=RIGHT, fill = Y)
         
         # Pack the frame holding the file list
-        self.frame.pack(expand=True)
+        self.frame.pack(expand=True, padx=10, pady =10, fill=BOTH,)
         
         # Pack the file list
-        self.fileList.pack(expand = True)
+        self.fileList.pack(expand = True, fill=BOTH)
 
         
         # Create frame to hold the buttons
-        frame2 = Frame(self.mainWindow, width = self.mainWindow.winfo_width())
+        self.frame2 = Frame(self.mainWindow, width = self.mainWindow.winfo_width())
         
         # Add browse button
-        browseButton = Button(frame2, text = "Browse", command = self.getFiles)
+        self.browseButton = Button(self.frame2, text = "Browse", width = 8, command = self.getFiles)
         
         # Add merge button
-        mergeButton = Button(frame2, text = "Merge", command = self.mergeFiles)
+        self.mergeButton = Button(self.frame2, text = "Merge", width = 8, command = self.mergeFiles)
         
         # Add preview button
-        previewButton = Button(frame2, text = "Preview", command = self.previewFile)
+        self.previewButton = Button(self.frame2, text = "Preview", width = 8, command = self.previewFile)
+
+        # Add about button
+        self.aboutButton = Button(self.frame2, text = "About", width = 8, command = self.showAbout)
         
         # Pack browse button
-        browseButton.pack()
+        self.browseButton.grid(row = 0, column = 0)
         
         # Pack merge button
-        mergeButton.pack()
+        self.mergeButton.grid(row = 0, column = 1)
         
         # Pack the preview button
-        previewButton.pack()
+        self.previewButton.grid(row = 1, column = 0)
+
+        # Pack the about button
+        self.aboutButton.grid(row = 1, column = 1)
         
         # Pack the frame holding the buttons
-        frame2.pack(expand = True)
+        self.frame2.pack(expand = True, padx =5)
         
     # Function to browse to pdf files
     def getFiles(self):
@@ -142,6 +151,7 @@ class app():
             
             merger.close()
             return
+            
      # Function to peview the pdf
     def previewFile(self):
     
@@ -195,7 +205,8 @@ class app():
             root.mainloop()
             '''
             return
-    
+    def showAbout(self):
+        messagebox.showerror("About", "Created by Vinay", icon = 'info')
     
         
 
